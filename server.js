@@ -8,6 +8,7 @@ import ProductRoutes from './routes/productRoutes.js';
 import cors from 'cors';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 dotenv.config();
 connectDB();
@@ -26,7 +27,16 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1", ProductRoutes);
 
 app.use('*', function (req, res) {
-    res.sendFile(path.join(__dirname, './client/build/index.html'));
+    const indexPath = path.join(__dirname, './client/build/index.html');
+    
+    // Check if the file exists
+    if (!fs.existsSync(indexPath)) {
+        console.error(`File not found: ${indexPath}`);
+        // Handle the error or send an appropriate response
+        return res.status(404).send('File not found');
+    }
+
+    res.sendFile(indexPath);
 });
 
 app.get('/', (req, res) => {
@@ -37,3 +47,4 @@ const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
     console.log(`Server Listening on Port ${PORT}`.bgCyan.white);
 });
+

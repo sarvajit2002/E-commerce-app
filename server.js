@@ -24,16 +24,13 @@ app.use(express.static(path.join(__dirname, './client/build')));
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1", ProductRoutes);
-
-app.get('/', (req, res) => {
-    res.send("<h1>Welcome to the ecommerce app</h1>");
-});
-
-// Place the wildcard route handler at the end
 app.use('*', function(req, res) {
     res.sendFile(path.join(__dirname, './client/build/index.html'));
 });
 
+app.get('/', (req, res) => {
+    res.send("<h1>Welcome to the ecommerce app</h1>");
+});
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {

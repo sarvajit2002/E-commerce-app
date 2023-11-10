@@ -18,7 +18,6 @@ import CreateProduct from "./pages/Admin/CreateProduct";
 import Users from './pages/Admin/Users'
 import Orders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
-import ProductDetails from "./components/ProductDetails";
 import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
 function App() {
@@ -45,7 +44,6 @@ function App() {
       <Route path="/register" element={<Register/>}/>
       <Route path="*" element={<PageNotFound/>}/>
       <Route path="/" element={<ProductList/>} />
-          <Route path="/products/:id" element={<ProductDetails/>} />
           <Route path="/cart" component={<Cart/>} />
     </Routes>
     </>

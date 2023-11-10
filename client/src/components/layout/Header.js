@@ -24,9 +24,9 @@ function Header() {
         <li className="nav-item">
           <NavLink to="/" className="nav-link ">Home</NavLink>
         </li>
-        <li className="nav-item">
+        {/*<li className="nav-item">
           <NavLink to="/category" className="nav-link">Category</NavLink>
-  </li>
+  </li>*/}
         {
           !auth.user ? (<>
           <li className="nav-item">

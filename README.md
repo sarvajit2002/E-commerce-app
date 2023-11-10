@@ -1,2 +1,3 @@
 # E-commerce-app
-in the terminal type npm run dev
+in the terminal type <br/>
+npm run dev

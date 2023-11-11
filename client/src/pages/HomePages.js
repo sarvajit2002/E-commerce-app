@@ -1,8 +1,6 @@
 import React from 'react'
 import Layout from '../components/layout/layout'
-import { useAuth } from '../context/Auth'
 import ProductList from '../components/ProductList'
-import ProductDetails from '../components/ProductDetails'
 import { useState } from 'react';
 import Cart from '../components/Cart'
 function HomePages() {

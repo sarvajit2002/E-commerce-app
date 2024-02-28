@@ -1,5 +1,5 @@
 import JWT from 'jsonwebtoken';
-import userModels from '../models/userModels.js';
+import userModel from '../models/userModels.js';
 
 export const requireSignIn = async (req, res, next) => {
   try {
@@ -28,8 +28,16 @@ export const requireSignIn = async (req, res, next) => {
 
 export const isAdmin = async (req, res, next) => {
   try {
-    const user = await userModels.findById(req.user._id);
+    const user = await userModel.findById(req.user._id);
     
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    // Check if user has the admin role
     if (user.role !== 1) {
       return res.status(401).json({
         success: false,

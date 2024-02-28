@@ -90,3 +90,8 @@ font-family: 'Playfair Display', serif;
     flex-direction: column;
     
 }
+
+.product-link{
+    text-decoration: none !important;
+    color: black !important;
+}

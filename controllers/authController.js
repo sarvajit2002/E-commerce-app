@@ -1,5 +1,6 @@
 import { comparePassword, hashPassword } from '../helpers/authhelpers.js';
 import userModel from '../models/userModels.js';
+import orderModel from '../models/orderModel.js';
 import JWT from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -140,3 +141,79 @@ export const testController = (req,res) =>{
     }
 }
 
+export const updateProfileController = async(req,res) => {
+    try {
+        const {name,email,password,address,phone} = req.body;
+        const user = await userModel.findById(req.user._id)
+        if(!password && password.length<6){
+             return res.json({error:"Password is required and 6 characters long"})
+        }
+        const hashedPassword = password ? await hashPassword(password) : undefined
+        const updatedUser = await userModel.findByIdAndUpdate(req.user._id,{
+            name:name || user.name,
+            phone:phone || user.phone,
+            email:email || user.email ,
+            address: address || user.address
+        },{new:true})
+       res.status(200).send({
+        success:true,
+        message:'Profile Updated Successfully',
+        updatedUser
+       })
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            status:false,
+            message:"Error while update profile",
+            error
+        })
+    }
+}
+
+export const getOrdersController = async(req,res) =>{
+    try {
+        const orders = await orderModel.find({buyer:req.user._id})
+        .populate('products','-photo')
+        .populate("buyer","name");
+        res.json(orders);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success:false,
+            message:'Error while getting orders',
+            error
+        })
+    }
+}
+export const getAllOrdersController = async(req,res) =>{
+    try {
+        const orders = await orderModel
+        .find({})
+        .populate('products','-photo')
+        .populate("buyer","name");
+        res.json(orders);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success:false,
+            message:'Error while getting orders',
+            error
+        })
+    }
+}
+
+export const orderStatusController = async(req,res) => {
+    try {
+        const {orderId} = req.params;
+        const {status} = req.body;
+        const orders = await orderModel.findByIdAndUpdate(orderId,{status},{new:true})
+        res.json(orders);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success:false,
+            message:'Error while Updating Orders',
+            error
+        })
+    }
+}

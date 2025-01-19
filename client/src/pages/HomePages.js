@@ -6,6 +6,7 @@ import { Checkbox,Radio } from 'antd';
 import toast from 'react-hot-toast';
 import { Prices } from '../components/Prices';
 import { useCart } from '../context/cart';
+import Popup from './popup';
 function HomePages() {
   const navigate = useNavigate();
   const [cart,setCart] = useCart();
@@ -16,6 +17,8 @@ function HomePages() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const referralLink = "https://bitli.in/z2uH7xd";
 
   const getAllCategory = async () => {
     try {
@@ -49,7 +52,14 @@ function HomePages() {
       console.error('Error fetching total products count:', error);
     }
   };
+  useEffect(() => {
+    // Show popup when the page loads
+    setShowPopup(true);
 
+    // Optional: Auto-close after a delay
+    const timer = setTimeout(() => setShowPopup(false), 10000); // 10 seconds
+    return () => clearTimeout(timer);
+  }, []);
   useEffect(() => {
     getAllCategory();
     getTotal();
@@ -88,8 +98,21 @@ function HomePages() {
       console.log(error);
     }
   }
+  useEffect(() => {
+    // Show popup when the page loads
+    setShowPopup(true);
+
+    // Optional: Auto-close after a delay
+    const timer = setTimeout(() => setShowPopup(false), 20000); // 10 seconds
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <Layout title={"Home Page"}>
+      <Popup 
+        show={showPopup} 
+        onClose={() => setShowPopup(false)} 
+        referralLink={referralLink} 
+      />
      <div className="container-fluid row mt-3">
        <div className="col-md-2">
         <h6 className='text-center'>Filter By Category</h6>
